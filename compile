@@ -1,0 +1,9 @@
+#!/bin/bash
+VER="riscv32"
+ISA="rv32e_zba_zbb_zbc_zbs_zicond_zmmul"
+ABI="ilp32e"
+clang -O2 --target=$VER -march=$ISA -mabi=$ABI -static -nostdlib -ffunction-sections -mrelax -Wl,-gc-sections,-T,link.ld -o a.out startup.c "$@" && 
+llvm-objcopy -O ihex a.out .temp &&
+llvm-objcopy -I ihex -O binary .temp a.bin &&
+python3 convert.py | tee out #&&
+# rm .temp a.bin
