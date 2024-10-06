@@ -1,9 +1,8 @@
 #!/bin/bash
-VER="riscv32"
-ISA="rv32e_zba_zbb_zbc_zbs_zicond_zmmul"
+TAR="riscv32"
+ISA="rv32ec_zba_zbb_zbc_zbs_zicond_zmmul"
 ABI="ilp32e"
-clang -O2 --target=$VER -march=$ISA -mabi=$ABI -static -nostdlib -ffunction-sections -mrelax -Wl,-gc-sections,-T,link.ld -o a.out startup.c "$@" && 
-llvm-objcopy -O ihex a.out .temp &&
-llvm-objcopy -I ihex -O binary .temp a.bin &&
-python3 convert.py | tee out #&&
+clang --target=$TAR -march=$ISA -mabi=$ABI -static -nostdlib -ffunction-sections -mrelax -Wl,--relax-gp,--gc-sections,--relax,-T,link.ld -o a.out startup.c "$@" && 
+# llvm-objcopy -I elf32-little -O binary a.out a.bin &&
+python3 advanced.py | tee out #&&
 # rm .temp a.bin
