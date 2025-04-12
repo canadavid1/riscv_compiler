@@ -9,6 +9,7 @@ __attribute((naked,section(".start"))) void _entry() {
         ".option pop;"
         "li sp,0x400000;"
         "call main;"
+        "ebreak;"
         "j .;"
     );
 }
