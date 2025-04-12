@@ -46,12 +46,11 @@ if True:
         exit(1)
     for i in range(1,symtab.num_symbols()):
         sym = symtab.get_symbol(i)
-        if sym.name and sym.name[0] != '$' and sym.entry.st_size > 0:
+        if sym.name and sym.name[0] != '$':# and sym.entry.st_size > 0:
             symb[sym.entry['st_value']].append(sym.name)
 
 def emit(binout: bytearray,disasm: dict[int,str],symb: dict[int,list[str]]):
     for i in range(4,len(binout),4):
-        ass = []
         out = False
         v = int.from_bytes(binout[i:i+4],'little')
         for j in range(i,i+4):

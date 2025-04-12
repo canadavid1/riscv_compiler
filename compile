@@ -1,8 +1,8 @@
 #!/bin/bash
 TAR="riscv32"
-ISA="rv32e_zba_zbb_zbc_zbs_zicond_zmmul"
-ABI="ilp32e"
-clang --target=$TAR -march=$ISA -mabi=$ABI -static -nostdlib -ffunction-sections -mrelax -Wl,--relax-gp,--gc-sections,--relax,-T,link.ld -o a.out startup.c "$@" && 
+ISA="rv32i_zba_zbb_zbc_zbs_zicond_zmmul"
+ABI="ilp32"
+clang --target=$TAR -march=$ISA -mabi=$ABI -static -mcmodel=medlow -nostdlib -fno-pic -ffunction-sections -mrelax -Wl,--relax-gp,--gc-sections,--relax,-T,link.ld -o a.out startup.c "$@" && 
 # llvm-objcopy -I elf32-little -O binary a.out a.bin &&
 python3 advanced.py | tee out #&&
 # rm .temp a.bin

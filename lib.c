@@ -12,5 +12,10 @@ long black_box_out(long in)
 
 void output(long val)
 {
-    asm("mv x15, %0" : : "r"(val) : "x15");
+    register long v asm("x31") = val;
+    asm volatile ("" : : "r"(v));
+}
+__attribute__((noreturn)) void halt()
+{
+    while(1) asm volatile("");
 }
