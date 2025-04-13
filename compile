@@ -2,7 +2,7 @@
 TAR="riscv32"
 ISA="rv32i" #_zba_zbb_zbc_zbs" # _zicond_zmmul
 ABI="ilp32"
-clang --target=$TAR -march=$ISA -mabi=$ABI -static -mcmodel=medlow -nostdlib -fno-pic -ffunction-sections -mrelax -Wl,--relax-gp,--gc-sections,--relax,-T,link.ld -o a.out startup.c "$@" && 
+clang --target=$TAR -march=$ISA -mabi=$ABI -static -mcmodel=medlow -nostdlib -fno-pic -ffunction-sections -mrelax -Wl,--relax-gp,--gc-sections,--relax,-T,link.ld -fomit-frame-pointer -fno-exceptions -fno-asynchronous-unwind-tables  -o a.out startup.c "$@" && 
 # llvm-objcopy -I elf32-little -O binary a.out a.bin &&
 python3 advanced.py | tee out.txt #&&
 # rm .temp a.bin

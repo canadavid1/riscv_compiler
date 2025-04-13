@@ -15,6 +15,7 @@ void output(long val)
     register long v asm("x31") = val;
     asm volatile ("" : : "r"(v));
 }
+#define MARK(i) asm volatile("li zero," #i)
 
 // unsigned long popcount(unsigned long in)
 // {

@@ -50,19 +50,40 @@ if True:
             symb[sym.entry['st_value']].append(sym.name)
 
 def emit(binout: bytearray,disasm: dict[int,str],symb: dict[int,list[str]]):
+    do_org = True
+    num_zeros = 0
     for i in range(4,len(binout),4):
         out = False
         v = int.from_bytes(binout[i:i+4],'little')
         for j in range(i,i+4):
             for k in symb[j]:
-                yield f"#{j:4x}   {k}:"
+                if do_org:
+                    yield f"origin {i//4:6} #{j:4x}   {k}:"
+                else:
+                    yield f"#{j:4x}   {k}:"
+                num_zeros = 0
+                do_org = False
             if j in disasm:
                 if not out:
+                    if do_org:
+                        yield f"origin {i//4}"
+                        do_org = False
                     yield f"0x{v:08x} #{j:3x} {disasm[j]}"
+                    num_zeros = 0
                     out = True
                 else:
                     yield f"           #{j:3x} {disasm[j]}"
         if not out:
+            if v == 0:
+                num_zeros += 1
+                if num_zeros > 5: continue
+                if num_zeros >= 5:
+                    yield "# ..."
+                    do_org = True
+                    continue
+            if do_org:
+                yield f"origin {i//4}"
+                do_org = False
             yield f"0x{v:08x}"
 
 print(*emit(binout,disasm,symb),sep="\n")

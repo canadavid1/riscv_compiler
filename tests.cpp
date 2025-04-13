@@ -1,11 +1,16 @@
 #include "lib.c"
 
 
-int arr[] = {1, 2, 3, 4, 5};
+struct A {
+    A() {
+        MARK(4);
+    }
+
+};
+
+A arr[100];
 
 int main()
 {
-    int v = 0;
-    for(auto i : arr) v += i;
-    black_box(v);
+    black_box((long)arr);
 }

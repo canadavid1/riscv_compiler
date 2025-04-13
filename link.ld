@@ -1,8 +1,9 @@
 ENTRY(_entry)
 SECTIONS
 {
-. = 0x0004;
-.start : { *(.text._entry) *(.start) }
+. = 0x0004; /* space for a jump to entry */
+.start : { startup.c }
+.eh_frame : { /DISCARD/ }
 .text : { *(.text) *(.text.*) }
 .sdata : ALIGN(4) {
     PROVIDE(global_pointer$ = . + 0x800);
